@@ -1,0 +1,58 @@
+body{
+    display:flex;
+    justify-content: center;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    background-color: aqua;
+    height: 700px;
+    width: 500px;
+    border: 2px solid;
+}
+
+.screen{
+    height: 100px;
+    width: 500px;
+    background-color: lightcyan;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    font-size: 64px;
+}
+.buttons {
+    height: 600px;
+    width: 500px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.button {
+    height: 100px;
+    width: 100px;
+    margin: 10px;
+    background-color: lightskyblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+}
+
+.number {
+    background-color: yellowgreen;
+}
+
+.op {
+    background-color: orange;
+}
+#zero {
+    height: 100px;
+    width: 220px;
+    
+}
+
+
