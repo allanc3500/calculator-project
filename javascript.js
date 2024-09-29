@@ -1,6 +1,6 @@
 const operate = function(number1, sign, number2){
-    let a = parseInt(number1);
-    let b = parseInt(number2);
+    let a = number1;
+    let b = number2;
 
     if(sign === "+"){
         return add(a, b);
@@ -20,7 +20,7 @@ const operate = function(number1, sign, number2){
 }
 
 const add = function(a, b){
-    return a + b;
+    return +a + +b;
 }
 
 const subtract = function(a, b){
@@ -36,38 +36,50 @@ const divide = function(a, b){
 }
 
 const screen = document.querySelector(".screen");
-let value = "";
 
-let operator = "/";
-let value2 = -1;
-let total = 0;
-let firstNumber = 0;
-let secondNumber = 0;
+let value = "";
+let total = "";
+let firstNumber = "";
+let secondNumber = "";
 let sign = "";
 
 
 
-//Next Step: Separate the functions?
-//Time: 8:00PM 9/25
 function buttonClick(){
     const allNumberButtons = document.querySelectorAll(".number");
     allNumberButtons.forEach((button) => {
         button.addEventListener("click", () => {
-            value += button.textContent;
-            let value2Plus = value.split('').findLastIndex(valueSubset => valueSubset == "+");
-            let value2Minus = value.split('').findLastIndex(valueSubset => valueSubset == "-");
-            let value2Multiply = value.split('').findLastIndex(valueSubset => valueSubset == "*");
-            let value2Divide = value.split('').findLastIndex(valueSubset => valueSubset == "/");
-
-            value2 = Math.max(value2Plus, value2Minus, value2Multiply, value2Divide);
-            if(value2 != -1){
-                screen.textContent = value.split('').splice(value2+1).join('');
-                if(screen.textContent == ''){
-                    screen.textContent = value.split('').splice(0, value2).join('');
+            total = "";
+            if(screen.textContent == "0"){
+                if(button.textContent == "0"){
+                    screen.textContent = "0";
+                    value = "";
+                }
+                else if(button.textContent == "."){
+                    screen.textContent = "0.";
+                    value = "0.";
+                }
+                else{
+                    if(value == "0"){
+                        value = "";
+                    }
+                    value += button.textContent;
+                    screen.textContent = value; 
                 }
             }
             else{
-                screen.textContent = value;
+                if(screen.textContent.includes(".")){
+                    if(button.textContent == "."){
+                        return;
+                    }
+                }
+                else if(button.textContent == "." && value == ""){
+                    screen.textContent = "0.";
+                    value = "0.";
+                    return;
+                }
+                value += button.textContent;
+                screen.textContent = value; 
             }
         });
     }); 
@@ -78,15 +90,19 @@ function buttonClick(){
     acButton.addEventListener("click", () => {
         screen.textContent = "0";
         value = "";
+        firstNumber = "";
+
     });
     return screen.textContent;
  }
+//Fix the signs next ---
 
  function signClick(){
     const sign = document.querySelector(".sign");
     sign.addEventListener("click", () => {
-        value = +screen.textContent * -1;
-        screen.textContent = +screen.textContent * -1;
+        let number = +screen.textContent * -1;
+        value = "" + number;
+        screen.textContent = value;
     });
  }
 
@@ -94,7 +110,7 @@ function buttonClick(){
     const percentButton = document.querySelector(".percent");
     percentButton.addEventListener("click",() => {
         value = +value/100;
-        screen.textContent = value;
+        screen.textContent = +screen.textContent/100;
     });
     
 }
@@ -103,8 +119,59 @@ function opClick(){
     const opButtons = document.querySelectorAll(".op");
     opButtons.forEach((opButton) => {
         opButton.addEventListener("click", () => {
-            firstNumber = value;
-            sign = opButton.textContent;
+            if(total != ""){
+                firstNumber = total;
+            }
+            if(firstNumber != "" && secondNumber != ""){
+                if(sign == "/" && secondNumber == "0"){
+                    screen.textContent = "Error";
+                    return;
+                }
+                total = operate(firstNumber, sign, secondNumber);
+                firstNumber = total;
+                screen.textContent = total;
+                secondNumber = "";
+                value = "";
+                return;
+            }
+            else if(firstNumber != "" && sign != ""){
+                    secondNumber = screen.textContent;
+                    if(sign == "/" && secondNumber == "0"){
+                        screen.textContent = "Error";
+                        return;
+                    }
+                    if(secondNumber == ""){
+                        return;
+                    }
+                    total = operate(firstNumber, sign, secondNumber);
+                    sign = opButton.textContent;
+                    firstNumber = total;
+                    screen.textContent = total;
+                    value = "";
+                    secondNumber = "";
+            }
+            else if(firstNumber != ""){
+                    secondNumber = value; //only this is diff?
+                    sign = opButton.textContent;
+                    if(sign == "/" && secondNumber == "0"){
+                        screen.textContent = "Error";
+                        return;
+                    }
+                    if(secondNumber == ""){
+                        return;
+                    }
+                    total = operate(firstNumber, sign, secondNumber);
+                    firstNumber = total;
+                    screen.textContent = total;
+                    value = "";
+                    secondNumber = "";
+            }
+            else{
+                firstNumber = value;
+                sign = opButton.textContent;
+                value = "";     
+            }
+
         }) 
     })
 }
@@ -112,15 +179,28 @@ function opClick(){
 function evaluate(){
     const evalButton = document.querySelector(".evaluate");
     evalButton.addEventListener("click", () => {
-        let a = value.split('').slice(0, value2).join('');
-        let sign = value[value2];
-        let b = value.split('').slice(value2+1).join('');
-        if(value == ''){
-            return;    
+        if(sign == "" && secondNumber == ""){
+            return;
         }
-        screen.textContent = operate(a, sign, b);
-        value = screen.textContent;
-        console.log(value);
+        if(secondNumber == ""){
+            secondNumber = value;
+        }
+        secondNumber = screen.textContent;
+        if(secondNumber == ""){
+            screen.textContent = total;
+            return;
+        }
+        if(sign == "/" && secondNumber == "0"){
+            screen.textContent = "Error";
+            return;
+        }
+
+        total = operate(firstNumber, sign, secondNumber);
+        screen.textContent = total;
+        firstNumber = "";
+        sign = "";
+        secondNumber = "";
+        value = "";
     })
 }
 
@@ -129,8 +209,5 @@ acClick();
 signClick();
 percentClick();
 evaluate();
+opClick();
 
-console.log(operate(4, "+", 3));
-console.log(operate(6, "-", 3));
-console.log(operate(4, "*", 3));
-console.log(operate(4, "/", 3));
