@@ -68,7 +68,7 @@ function buttonClick(){
                 }
             }
             else{
-                if(screen.textContent.includes(".") && firstNumber != ""){
+                if((String(value).includes('.')) && firstNumber != ""){
                     if(button.textContent == "."){
                         return;
                     }
@@ -78,6 +78,7 @@ function buttonClick(){
                     value = "0.";
                     return;
                 }
+                console.log(value);
                 value += button.textContent;
                 screen.textContent = value; 
             }
@@ -109,8 +110,8 @@ function buttonClick(){
  function percentClick(){
     const percentButton = document.querySelector(".percent");
     percentButton.addEventListener("click",() => {
-        value = +value/100;
         screen.textContent = +screen.textContent/100;
+        value = screen.textContent;
     });
     
 }
