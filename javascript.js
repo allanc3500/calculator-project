@@ -68,7 +68,7 @@ function buttonClick(){
                 }
             }
             else{
-                if(screen.textContent.includes(".")){
+                if(screen.textContent.includes(".") && firstNumber != ""){
                     if(button.textContent == "."){
                         return;
                     }
