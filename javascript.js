@@ -112,6 +112,7 @@ function buttonClick(){
     percentButton.addEventListener("click",() => {
         screen.textContent = +screen.textContent/100;
         value = screen.textContent;
+        total = "";
     });
     
 }
