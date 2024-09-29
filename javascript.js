@@ -3,19 +3,19 @@ const operate = function(number1, sign, number2){
     let b = number2;
 
     if(sign === "+"){
-        return add(a, b);
+        return Math.round((add(a, b))*10000000000000)/10000000000000;
     }
 
     if(sign === "-"){
-        return subtract(a, b);
+        return Math.round((subtract(a, b))*10000000000000)/10000000000000;
     }
 
     if(sign === "*"){
-        return multiply(a, b);
+        return Math.round((multiply(a, b))*10000000000000)/10000000000000;
     }
 
     if(sign === "/"){
-        return divide(a, b);
+        return Math.round((divide(a, b))*10000000000000)/10000000000000;
     }
 }
 
