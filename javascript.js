@@ -101,9 +101,9 @@ function buttonClick(){
  function signClick(){
     const sign = document.querySelector(".sign");
     sign.addEventListener("click", () => {
-        let number = +screen.textContent * -1;
-        value = "" + number;
-        screen.textContent = value;
+        screen.textContent = +screen.textContent * -1;
+        value = screen.textContent;
+        total = "";
     });
  }
 
